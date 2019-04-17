@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    <script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+    <link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+  
+  
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>[pwa实践]serviceworker生命周期、请求代理与通信 | Alex Zihuan Ran</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="ssss">
+  
+  
+  
+  
+  <meta name="description" content="本文主要讲 serviceWorker 生命周期和挂载、卸载等问题，适合对 serviceWorker 的作用有所了解但是具体细节不是特别清楚的读者 以下所有分析基于 Chrome V63 serviceWorker的挂载先来一段代码感受serviceWorker注册: 12345678910111213if (&amp;apos;serviceWorker&amp;apos; in navigator) &amp;#1">
+<meta name="keywords" content="PWA">
+<meta property="og:type" content="article">
+<meta property="og:title" content="[PWA实践]serviceWorker生命周期、请求代理与通信">
+<meta property="og:url" content="http://yoursite.com/2018/02/10/PWA实践-serviceWorker生命周期、请求代理与通信/index.html">
+<meta property="og:site_name" content="Alex Zihuan Ran">
+<meta property="og:description" content="本文主要讲 serviceWorker 生命周期和挂载、卸载等问题，适合对 serviceWorker 的作用有所了解但是具体细节不是特别清楚的读者 以下所有分析基于 Chrome V63 serviceWorker的挂载先来一段代码感受serviceWorker注册: 12345678910111213if (&amp;apos;serviceWorker&amp;apos; in navigator) &amp;#1">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://www.10000h.top/images/sw_1.png">
+<meta property="og:updated_time" content="2019-04-15T00:17:48.441Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="[PWA实践]serviceWorker生命周期、请求代理与通信">
+<meta name="twitter:description" content="本文主要讲 serviceWorker 生命周期和挂载、卸载等问题，适合对 serviceWorker 的作用有所了解但是具体细节不是特别清楚的读者 以下所有分析基于 Chrome V63 serviceWorker的挂载先来一段代码感受serviceWorker注册: 12345678910111213if (&amp;apos;serviceWorker&amp;apos; in navigator) &amp;#1">
+<meta name="twitter:image" content="https://www.10000h.top/images/sw_1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Alex Zihuan Ran" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/hiero.css">
+  <link rel="stylesheet" href="/css/glyphs.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/my.css">
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+</head>
+</html>
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "Home"; 
+
+  themeMenus["/archives"] = "Archives"; 
+
+  themeMenus["/categories"] = "Categories"; 
+
+  themeMenus["/tags"] = "Tags"; 
+
+  themeMenus["/about"] = "About"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="Alex Zihuan Ran" rel="home"> Bello! </a>
+            
+          </h1>
+
+          
+            <div class="site-description">I&#39;m Alex Ran, 冉梓欢.</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class href="/">Home</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class href="/archives">Archives</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class href="/categories">Categories</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class href="/tags">Tags</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class href="/about">About</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt src>
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/pose.jpg,https://source.unsplash.com/collection/954550/1920x1080".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-PWA实践-serviceWorker生命周期、请求代理与通信" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost">
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      [PWA实践]serviceWorker生命周期、请求代理与通信
+    </h1>
+  
+
+      </header>
+    
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2018/02/10/PWA实践-serviceWorker生命周期、请求代理与通信/" class="article-date">
+	  <time datetime="2018-02-11T06:05:43.000Z" itemprop="datePublished">February 11, 2018</time>
+	</a>
+
+      
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PWA/">PWA</a></li></ul>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文主要讲 serviceWorker 生命周期和挂载、卸载等问题，适合对 serviceWorker 的作用有所了解但是具体细节不是特别清楚的读者</p>
+<p><strong>以下所有分析基于 Chrome V63</strong></p>
+<h3 id="serviceWorker的挂载"><a href="#serviceWorker的挂载" class="headerlink" title="serviceWorker的挂载"></a>serviceWorker的挂载</h3><p>先来一段代码感受serviceWorker注册:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">if (&apos;serviceWorker&apos; in navigator) &#123;</span><br><span class="line">      window.addEventListener(&apos;load&apos;, function () &#123;</span><br><span class="line">          navigator.serviceWorker.register(&apos;/sw.js&apos;, &#123;scope: &apos;/&apos;&#125;)</span><br><span class="line">              .then(function (registration) &#123;</span><br><span class="line">                  // 注册成功</span><br><span class="line">                  console.log(&apos;ServiceWorker registration successful with scope: &apos;, registration.scope);</span><br><span class="line">              &#125;)</span><br><span class="line">              .catch(function (err) &#123;</span><br><span class="line">                  // 注册失败:(</span><br><span class="line">                  console.log(&apos;ServiceWorker registration failed: &apos;, err);</span><br><span class="line">              &#125;);</span><br><span class="line">      &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>通过上述代码，我们定义在<code>/sw.js</code>里的内容就会生效(对于当前页面之前没有 serviceWorker 的情况而言，我们注册的 serviceWorker 肯定会生效，如果当前页面已经有了我们之前注册的 serviceWorker，这个时候涉及到 serviceWorker的更新机制，下文详述)</p>
+<p>如果我们在<code>sw.js</code>没有变化的情况下刷新这个页面，每次还是会有注册成功的回调以及相应的log输出，但是这个时候浏览器发现我们的 serviceWorker 并没有发生变化，并不会重置一遍 serviceWorker</p>
+<h3 id="serviceWorker更新"><a href="#serviceWorker更新" class="headerlink" title="serviceWorker更新"></a>serviceWorker更新</h3><p>我们如果想更新一个 serviceWorker，根据我们的一般web开发策略，可能会想到以下几种策略：</p>
+<ul>
+<li>仅变更文件名(比如把<code>sw.js</code>变成<code>sw-v2.js</code>或者加一个hash)</li>
+<li>仅变更文件内容(仅仅更新<code>sw.js</code>的内容，文件名不变)</li>
+<li>同时变更：同时执行以上两条</li>
+</ul>
+<p>在这里，我可以很负责的告诉你，<strong>变更serviceWorker文件名绝对不是一个好的实践</strong>，浏览器判断 serviceWorker 是否相同基本和文件名没有关系，甚至有可能还会造成浏览器抛出404异常(因为找不到原来的文件名对应的文件了)。</p>
+<p>所以我们只需要变更内容即可，实际上，我们每次打开或者刷新该页面，浏览器都会重新请求一遍 serviceWorker 的定义文件，如果发现文件内容和之前的不同了，这个时候:</p>
+<p>(<em>下文中，我们使用“有关 tab”来表示受 serviceWorker 控制的页面</em>，刷新均指普通刷新(F5/CommandR)并不指Hard Reload)</p>
+<ul>
+<li><p>这个新的 serviceWorker 就会进入到一个 “waiting to activate” 的状态，并且只要我们不关闭这个网站的所有tab(更准确地说，是这个 serviceWorker 控制的所有页面)，新的 serviceWorker 始终不会进入替换原有的进入到 running 状态(就算我们只打开了一个有关 tab，直接刷新也不会让新的替换旧的)。</p>
+</li>
+<li><p>如果我们多次更新了 serviceWorker 并且没有关闭当前的 tab 页面，那么新的 serviceWorker 就会挤掉原先处于第二顺位(waiting to activate)的serviceWorker，变成<code>waiting to activate</code>状态</p>
+</li>
+</ul>
+<p>也就是说，我们只有关闭当前旧的 serviceWorker 控制的所有页面 的所有tab，之后浏览器才会把旧的 serviveWorker 移除掉，换成新的，再打开相应的页面就会使用新的了。</p>
+<p>当然，也有一个特殊情况：如果我们在新的 serviceWorker 使用了<code>self.skipWaiting();</code>，像这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">self.addEventListener(&apos;install&apos;, function(event) &#123;</span><br><span class="line">    self.skipWaiting();</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这个时候，要分为以下两种情况：</p>
+<ul>
+<li>如果当前我们只打开了一个有关 tab，这个时候，我们直接刷新，发现新的已经替换掉旧的了。</li>
+<li>如果我们当前打开了若干有关 tab，这个时候，无论我们刷新多少次，新的也不会替换掉旧的，只有我们一个一个关掉tab(或者跳转走)只剩下最后一个了，这个时候刷新，会让新的替换旧的(也就是上一种情况)</li>
+</ul>
+<p>Chrome 的这种机制，防止了同一个页面先后被新旧两个不同的 serviceWorker 接管的情况出现。</p>
+<h4 id="手动更新"><a href="#手动更新" class="headerlink" title="手动更新"></a>手动更新</h4><p>虽然说，在页面每次进入的时候浏览器都会检查一遍 serviceWorker 是否更新，但如果我们想要手动更新 serviceWorker 也没有问题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">navigator.serviceWorker.register(&quot;/sw.js&quot;).then(reg =&gt; &#123;</span><br><span class="line">  reg.update();</span><br><span class="line">  // 或者 一段时间之后更新</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>这个时候如果 serviceWorker 变化了，那么会重新触发 install 执行一遍 install 的回调函数，如果没有变，就不会触发这个生命周期。</p>
+<h4 id="install-生命周期钩子"><a href="#install-生命周期钩子" class="headerlink" title="install 生命周期钩子"></a>install 生命周期钩子</h4><p>我们一般会在 sw.js 中，添加<code>install</code>的回调，一般在回调中，我们会进行缓存处理操作，像这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">self.addEventListener(&apos;install&apos;, function(event) &#123;</span><br><span class="line">    console.log(&apos;[sw2] serviceWorker Installed successfully&apos;, event)</span><br><span class="line"></span><br><span class="line">    event.waitUntil(</span><br><span class="line">        caches.open(&apos;mysite-static-v1&apos;).then(function(cache) &#123;</span><br><span class="line">            return cache.addAll([</span><br><span class="line">                &apos;/stylesheets/style.css&apos;,</span><br><span class="line">                &apos;/javascripts/common.39c462651d449a73b5bb.js&apos;,</span><br><span class="line">            ]);</span><br><span class="line">        &#125;)</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果我们新打开一个页面，如果之前有 serviceWorker，那么会触发<code>install</code>，如果之前没有， 那么在 serviceWorker 装载后会触发 <code>install</code>。</p>
+<p>如果我们刷新页面，serviceWorker 和之前没有变化或者 serviceWorker 已经处在 <code>waiting to activate</code>，不会触发<code>install</code>，如果有变化，会触发<code>install</code>，但不会接管页面(上文中提到)。</p>
+<h4 id="activate-生命周期钩子"><a href="#activate-生命周期钩子" class="headerlink" title="activate 生命周期钩子"></a>activate 生命周期钩子</h4><p>activate 在什么时候被触发呢？</p>
+<p>如果当前页面没有 serviceworker ，那么会在 install 之后触发。</p>
+<p>如果当前页面有 serviceWorker，并且有 serviceWorker更新，新的 serviceWorker 只会触发 install ，不会触发 activate</p>
+<p>换句话说，当前变成 active 的 serviceWorker 才会被触发这个生命周期钩子</p>
+<h3 id="serviceWorker-代理请求"><a href="#serviceWorker-代理请求" class="headerlink" title="serviceWorker 代理请求"></a>serviceWorker 代理请求</h3><p>serviceWorker 代理请求相对来说比较好理解，以下是一个很简单的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">self.addEventListener(&apos;install&apos;, function(event) &#123;</span><br><span class="line">    console.log(&apos;[sw2] serviceWorker Installed successfully&apos;, event)</span><br><span class="line"></span><br><span class="line">    event.waitUntil(</span><br><span class="line">        caches.open(&apos;mysite-static-v1&apos;).then(function(cache) &#123;</span><br><span class="line">            return cache.addAll([</span><br><span class="line">                &apos;/stylesheets/style.css&apos;,</span><br><span class="line">                &apos;/javascripts/common.39c462651d449a73b5bb.js&apos;,</span><br><span class="line">            ]);</span><br><span class="line">        &#125;)</span><br><span class="line">    );</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">self.addEventListener(&apos;fetch&apos;, function(event) &#123;</span><br><span class="line">    console.log(&apos;Handling fetch event for&apos;, event.request.url);</span><br><span class="line">    // console.log(&apos;[sw2]fetch but do nothing&apos;)</span><br><span class="line"></span><br><span class="line">    event.respondWith(</span><br><span class="line">        // caches.match() will look for a cache entry in all of the caches available to the service worker.</span><br><span class="line">        // It&apos;s an alternative to first opening a specific named cache and then matching on that.</span><br><span class="line">        caches.match(event.request).then(function(response) &#123;</span><br><span class="line">            if (response) &#123;</span><br><span class="line">                console.log(&apos;Found response in cache:&apos;, response);</span><br><span class="line"></span><br><span class="line">                return response;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            console.log(&apos;No response found in cache. About to fetch from network...&apos;);</span><br><span class="line"></span><br><span class="line">            // event.request will always have the proper mode set (&apos;cors, &apos;no-cors&apos;, etc.) so we don&apos;t</span><br><span class="line">            // have to hardcode &apos;no-cors&apos; like we do when fetch()ing in the install handler.</span><br><span class="line">            return fetch(event.request).then(function(response) &#123;</span><br><span class="line">                console.log(&apos;Response from network is:&apos;, response);</span><br><span class="line"></span><br><span class="line">                return response;</span><br><span class="line">            &#125;).catch(function(error) &#123;</span><br><span class="line">                // This catch() will handle exceptions thrown from the fetch() operation.</span><br><span class="line">                // Note that a HTTP error response (e.g. 404) will NOT trigger an exception.</span><br><span class="line">                // It will return a normal response object that has the appropriate error code set.</span><br><span class="line">                console.error(&apos;Fetching failed:&apos;, error);</span><br><span class="line"></span><br><span class="line">                throw error;</span><br><span class="line">            &#125;);</span><br><span class="line">        &#125;)</span><br><span class="line">    );</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>有两点要注意的：</p>
+<p>我们如果这样代理了，哪怕没有 cache 命中，实际上也会在控制台写from serviceWorker，而那些真正由serviceWorker发出的请求也会显示，有一个齿轮图标，如下图：</p>
+<p><img src="https://www.10000h.top/images/sw_1.png" alt></p>
+<p>第二点就是我们如果在 fetch 的 listener 里面 do nothing， 也不会导致这个请求直接假死掉的。</p>
+<p>另外，通过上面的代码我们发现，实际上由于现在我们习惯给我们的文件资源加上 hash，所以我们基本上不可能手动输入需要缓存的文件列表，现在大多数情况下，我们都是借助 webpack 插件，完成这部分工作。</p>
+<h3 id="serviceWorker-和-页面之间的通信"><a href="#serviceWorker-和-页面之间的通信" class="headerlink" title="serviceWorker 和 页面之间的通信"></a>serviceWorker 和 页面之间的通信</h3><p>serviceWorker向页面发消息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">sw.js:</span><br><span class="line"></span><br><span class="line">self.clients.matchAll().then(clients =&gt; &#123;</span><br><span class="line">    clients.forEach(client =&gt; &#123;</span><br><span class="line">        console.log(&apos;%c [sw message]&apos;, &apos;color:#00aa00&apos;, client)</span><br><span class="line">        client.postMessage(&quot;This message is from serviceWorker&quot;)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">主页面:</span><br><span class="line"></span><br><span class="line">navigator.serviceWorker.addEventListener(&apos;message&apos;, function (event) &#123;</span><br><span class="line">    console.log(&apos;[Main] receive from serviceWorker:&apos;, event.data, event)</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>当然，这里面是有坑的：</p>
+<ul>
+<li>主界面的事件监听需要等serviceWorker注册完毕后，所以一般<code>navigator.serviceWorker.register</code>的回调到来之后再进行注册(或者延迟足够的时间)。</li>
+<li>如果在主界面事件监听还没有注册成功的时候 serviceWorker 发送消息，自然是收不到的。如果我们把 serviceWorker 直接写在 install 的回调中，也是不能被正常收到的。</li>
+</ul>
+<p>从页面向 serviceWorker 发送消息：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">主页面:</span><br><span class="line"></span><br><span class="line">navigator.serviceWorker.controller &amp;&amp; navigator.serviceWorker.controller.postMessage(&apos;hello serviceWorker&apos;);</span><br><span class="line"></span><br><span class="line">sw.js:</span><br><span class="line">self.addEventListener(&apos;message&apos;, function (event) &#123;</span><br><span class="line">    console.log(&quot;[sw from main]&quot;,event.data); // 输出：&apos;sw.updatedone&apos;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>同样的，这也要求主界面的代码需要等到serviceWorker注册完毕后触发，另外还有一点值得注意， serviceWorker 的事件绑定代码要求主界面的serviceWorker已经注册完毕后才可以。</p>
+<p>也就是说，如果当前页面没有该serviceWorker 第一次注册是不会收到主界面接收到的消息的。</p>
+<p>记住，只有当前已经在 active 的 serviceWorker， 才能和主页面收发消息等。</p>
+<p><strong>以上就是和 serviceWorker 有关的一些内容，在下一篇文章中，我会对PWA 添加至主屏幕等功能进行总结</strong></p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PWA/">PWA</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2018/04/08/构建利用Proxy和Reflect实现双向数据绑定的微框架/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Prev</strong>
+      <div class="article-nav-title">
+        
+          构建利用Proxy和Reflect实现双向数据绑定的微框架
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2017/08/31/深入浏览器web渲染与优化-续/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Next</strong>
+      <div class="article-nav-title">深入浏览器web渲染与优化-续</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">Contents</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#serviceWorker的挂载"><span class="nav-number">1.</span> <span class="nav-text">serviceWorker的挂载</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#serviceWorker更新"><span class="nav-number">2.</span> <span class="nav-text">serviceWorker更新</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#手动更新"><span class="nav-number">2.1.</span> <span class="nav-text">手动更新</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#install-生命周期钩子"><span class="nav-number">2.2.</span> <span class="nav-text">install 生命周期钩子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#activate-生命周期钩子"><span class="nav-number">2.3.</span> <span class="nav-text">activate 生命周期钩子</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#serviceWorker-代理请求"><span class="nav-number">3.</span> <span class="nav-text">serviceWorker 代理请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#serviceWorker-和-页面之间的通信"><span class="nav-number">4.</span> <span class="nav-text">serviceWorker 和 页面之间的通信</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019 Z.Ran All Rights Reserved.
+          <!-- 
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+           -->
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+<script src="/js/my.js"></script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://dnqof95d40fo6.cloudfront.net/atw7f8.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    <script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+    <link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+  
+  
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>introduction to machine learning | Alex Zihuan Ran</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="ssss">
+  
+  
+  
+  
+  <meta name="description" content="This note is based on 2019 Spring COMPSCI189/289A course at University of California, Berkeley by Jonathan Shewchuk. #Supervised Learning Classificationexample 1: classify digit 1 and 7 $N\times N$ pi">
+<meta name="keywords" content="Machine Learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Introduction to Machine Learning">
+<meta property="og:url" content="http://yoursite.com/2019/04/16/Introduction to Machine Learning/index.html">
+<meta property="og:site_name" content="Alex Zihuan Ran">
+<meta property="og:description" content="This note is based on 2019 Spring COMPSCI189/289A course at University of California, Berkeley by Jonathan Shewchuk. #Supervised Learning Classificationexample 1: classify digit 1 and 7 $N\times N$ pi">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-04-17T03:39:16.436Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Introduction to Machine Learning">
+<meta name="twitter:description" content="This note is based on 2019 Spring COMPSCI189/289A course at University of California, Berkeley by Jonathan Shewchuk. #Supervised Learning Classificationexample 1: classify digit 1 and 7 $N\times N$ pi">
+  
+    <link rel="alternate" href="/atom.xml" title="Alex Zihuan Ran" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/hiero.css">
+  <link rel="stylesheet" href="/css/glyphs.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/my.css">
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+</head>
+</html>
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "Home"; 
+
+  themeMenus["/archives"] = "Archives"; 
+
+  themeMenus["/categories"] = "Categories"; 
+
+  themeMenus["/tags"] = "Tags"; 
+
+  themeMenus["/about"] = "About"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="Alex Zihuan Ran" rel="home"> Bello! </a>
+            
+          </h1>
+
+          
+            <div class="site-description">I&#39;m Alex Ran, 冉梓欢.</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class href="/">Home</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class href="/archives">Archives</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class href="/categories">Categories</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class href="/tags">Tags</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class href="/about">About</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt src>
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/pose.jpg,https://source.unsplash.com/collection/954550/1920x1080".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Introduction to Machine Learning" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost">
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      Introduction to Machine Learning
+    </h1>
+  
+
+      </header>
+    
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2019/04/16/Introduction to Machine Learning/" class="article-date">
+	  <time datetime="2019-04-16T10:15:01.000Z" itemprop="datePublished">April 16, 2019</time>
+	</a>
+
+      
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Machine-Learning/">Machine Learning</a></li></ul>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This note is based on 2019 Spring COMPSCI189/289A course at University of California, Berkeley by Jonathan Shewchuk.</p>
+<p>#Supervised Learning</p>
+<h2 id="Classification"><a href="#Classification" class="headerlink" title="Classification"></a>Classification</h2><h3 id="example-1-classify-digit-1-and-7"><a href="#example-1-classify-digit-1-and-7" class="headerlink" title="example 1: classify digit 1 and 7"></a>example 1: classify digit 1 and 7</h3><ol>
+<li>$N\times N$ pixels matrices</li>
+<li>flatten into vector</li>
+<li>create a classifier for $N\times N$ space<br>Note: Decision Boundary is a hyperplane</li>
+</ol>
+<h3 id="example-2-Bank-loan-default-prediction"><a href="#example-2-Bank-loan-default-prediction" class="headerlink" title="example 2: Bank loan default prediction"></a>example 2: Bank loan default prediction</h3><p>See notes for M3S17<a href>Quantitative Methods for Finance</a></p>
+<h3 id="Feature-Independent-Variables-Predictor-Variables"><a href="#Feature-Independent-Variables-Predictor-Variables" class="headerlink" title="Feature/Independent Variables/ Predictor Variables"></a>Feature/Independent Variables/ Predictor Variables</h3><p>?</p>
+<h3 id="Overfitting"><a href="#Overfitting" class="headerlink" title="Overfitting"></a>Overfitting</h3><p>The model is shaped to specifically to one certain data set so not predictive to new data.</p>
+<p>When the test error worse coz the classifier becomes too sensitive to outliers or to other spurious/untrue patterns.</p>
+<p>Sinuous decision boundaries that fit the sample points so well that it do not classify future points well.</p>
+<h4 id="Quantify-Overfitting"><a href="#Quantify-Overfitting" class="headerlink" title="Quantify Overfitting"></a>Quantify Overfitting</h4><h3 id="Decision-Boundary"><a href="#Decision-Boundary" class="headerlink" title="Decision Boundary"></a>Decision Boundary</h3><p>The boundary chosen by classifier to separate items in class from those are not.</p>
+<h3 id="Decision-Function"><a href="#Decision-Function" class="headerlink" title="Decision Function"></a>Decision Function</h3><p>A function $f(x)$ that maps a sample point to a scalar value that<br>$$<br>f(x)&gt;0 if x \in class C<br>f(x)\leq if x not \in class C<br>$$</p>
+<p>For these decision function, the decision boundary is $f(x)=0$, <strong>usually</strong> a (d-1) dimensional surface in $R^d$.</p>
+<h3 id="Isosurface-iso-contours"><a href="#Isosurface-iso-contours" class="headerlink" title="Isosurface/iso contours"></a>Isosurface/iso contours</h3><p>A isosurface for function $f$ is ${x: f(x)=0}$, 0 is isovalue here.<br>Note: ‘iso-‘ prefix means ‘equal-‘</p>
+<h3 id="Linear-classifier"><a href="#Linear-classifier" class="headerlink" title="Linear classifier"></a>Linear classifier</h3><p>The decision boundary is a line/plane<br>Usually a linear decision function.</p>
+<p>$$<br>x=(x_1,x_2,…,x_5)^T</p>
+<p>$$</p>
+<h3 id="Conventions"><a href="#Conventions" class="headerlink" title="Conventions:"></a>Conventions:</h3><p>Uppercase roman: matrix, random variables, set<br>Lowercase roman: vector<br>Greek: scalar<br>Other scalar:</p>
+<ul>
+<li>n, number of sample points</li>
+<li>d, number of features</li>
+<li>i,j,k, integer indices<br>Function: f(), s(),…</li>
+</ul>
+<h3 id="Norms"><a href="#Norms" class="headerlink" title="Norms"></a>Norms</h3><ul>
+<li>Euclidean norms</li>
+<li>Normalize a vector: $\frac{x}{|x|}$</li>
+<li>dot product:<ul>
+<li>length:$|x|=\sum x_i y_i$</li>
+<li>angle: $cos(\theta)=\frac{x\dot y}{|x||y|}$</li>
+</ul>
+</li>
+</ul>
+<h3 id="hyperplane"><a href="#hyperplane" class="headerlink" title="hyperplane"></a>hyperplane</h3><p>Given a decision function $f(x)=w\dot x+\alpha$ is $H={x: w\dot x =-\alpha }$<br>The set H is a <strong>hyperplane</strong>.</p>
+<p><strong>property</strong><br>For any x, y on H, $w\dot(y-x)=0$</p>
+<p><strong>normal vector</strong> w</p>
+<p><strong>signed distance</strong>$w\dot x +\alpha$, $w$ is unit vector<br>i.e. positive on one side of H, negative on the other side</p>
+<p>Note: the distance from H to the origin is $\alpha$.<br>Note2: $\alpha =0$ iff H passes through origin</p>
+<h3 id="weights"><a href="#weights" class="headerlink" title="weights"></a>weights</h3><p>coefficients in $w$ and$\alpha$ are called <strong>weights</strong> or <strong>regression coefficients</strong></p>
+<h3 id="Linearly-separable"><a href="#Linearly-separable" class="headerlink" title="Linearly separable"></a>Linearly separable</h3><p>the input data is <strong>linearly separable</strong> if there exists a hyperplane that separates all the sample planes in C from those not in C.</p>
+<h3 id="Centriod-classifier"><a href="#Centriod-classifier" class="headerlink" title="Centriod classifier"></a>Centriod classifier</h3><p>computer mean $\mu_c$ of all vectors in class C and meam $\mu_x$ of al vectors NOT in class C.</p>
+<ul>
+<li>Decision function:<br>$f(x)=(\mu_c-\mu_x)\dot x-(\mu_c-\mu_x)\dot \frac{(\mu_c-\mu_x)}{2}$<br>$(\mu_c-\mu_x)$ is normal vector<br>$\frac{(\mu_c-\mu_x)}{2}$ is midpoint between$\mu_c, \mu_x$<br>so the decision boundary is the hyperplane that bisects \bar{\mu_c\mu_x}</li>
+<li>good at: classify with samples from two gaussian/normal distributions, especially when sample size is large</li>
+</ul>
+<h3 id="Perceptron-Algorithm"><a href="#Perceptron-Algorithm" class="headerlink" title="Perceptron Algorithm"></a>Perceptron Algorithm</h3><blockquote>
+<p>Slow but correct for linearly separable points.<br>Uses a <strong>numerical optimisation</strong> algorithm, namely the <strong>gradient decent</strong>.</p>
+</blockquote>
+<p>Sample points $X_1,X_2,…,X_n$.<br>For each sample point, $y_i = 1(\in C)\ or\ -1(\notin C)$</p>
+<p>For simplicity, assume the decision boundaries pass through the origin.</p>
+<h2 id="Regression"><a href="#Regression" class="headerlink" title="Regression"></a>Regression</h2><p>#Unsupervised Learning</p>
+<h2 id="Clustering"><a href="#Clustering" class="headerlink" title="Clustering"></a>Clustering</h2><h2 id="Dimensionality-Reduction"><a href="#Dimensionality-Reduction" class="headerlink" title="Dimensionality Reduction"></a>Dimensionality Reduction</h2><h1 id="Validation"><a href="#Validation" class="headerlink" title="Validation"></a>Validation</h1><p>Hold back a subset of training data for future test use–validation set(to tune hyperparameters/choose model).</p>
+<p>test set: final evaluation</p>
+<ol>
+<li>train a classifier multiple times, with different model/hyperparameter</li>
+<li>test it on NEW data</li>
+<li>choose the setting that gives the best validation result<br>?why: we want the model to be working in general data. In most cases(knn for example),input used data will always give the right output, which is not valuable for our evaluation of the model.</li>
+</ol>
+<h2 id="Types-of-error"><a href="#Types-of-error" class="headerlink" title="Types of error"></a>Types of error</h2><ol>
+<li>training set error: fraction of training images not classified correctly</li>
+<li>test set error:<br>fraction of misclassifying new data</li>
+</ol>
+<h1 id="outlier"><a href="#outlier" class="headerlink" title="outlier:"></a>outlier:</h1><p>points are atypical</p>
+<h1 id="hyperparameters"><a href="#hyperparameters" class="headerlink" title="hyperparameters"></a>hyperparameters</h1><p>~ control overfitting/underfitting(e.g. k in knn)</p>
+
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Machine-Learning/">Machine Learning</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/04/14/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Next</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">Contents</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Classification"><span class="nav-number">1.</span> <span class="nav-text">Classification</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#example-1-classify-digit-1-and-7"><span class="nav-number">1.1.</span> <span class="nav-text">example 1: classify digit 1 and 7</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#example-2-Bank-loan-default-prediction"><span class="nav-number">1.2.</span> <span class="nav-text">example 2: Bank loan default prediction</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Feature-Independent-Variables-Predictor-Variables"><span class="nav-number">1.3.</span> <span class="nav-text">Feature/Independent Variables/ Predictor Variables</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Overfitting"><span class="nav-number">1.4.</span> <span class="nav-text">Overfitting</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Quantify-Overfitting"><span class="nav-number">1.4.1.</span> <span class="nav-text">Quantify Overfitting</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Decision-Boundary"><span class="nav-number">1.5.</span> <span class="nav-text">Decision Boundary</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Decision-Function"><span class="nav-number">1.6.</span> <span class="nav-text">Decision Function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Isosurface-iso-contours"><span class="nav-number">1.7.</span> <span class="nav-text">Isosurface/iso contours</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linear-classifier"><span class="nav-number">1.8.</span> <span class="nav-text">Linear classifier</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Conventions"><span class="nav-number">1.9.</span> <span class="nav-text">Conventions:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Norms"><span class="nav-number">1.10.</span> <span class="nav-text">Norms</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hyperplane"><span class="nav-number">1.11.</span> <span class="nav-text">hyperplane</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#weights"><span class="nav-number">1.12.</span> <span class="nav-text">weights</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linearly-separable"><span class="nav-number">1.13.</span> <span class="nav-text">Linearly separable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Centriod-classifier"><span class="nav-number">1.14.</span> <span class="nav-text">Centriod classifier</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Perceptron-Algorithm"><span class="nav-number">1.15.</span> <span class="nav-text">Perceptron Algorithm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Regression"><span class="nav-number">2.</span> <span class="nav-text">Regression</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Clustering"><span class="nav-number">3.</span> <span class="nav-text">Clustering</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dimensionality-Reduction"><span class="nav-number">4.</span> <span class="nav-text">Dimensionality Reduction</span></a></li></ol><li class="nav-item nav-level-1"><a class="nav-link" href="#Validation"><span class="nav-number"></span> <span class="nav-text">Validation</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Types-of-error"><span class="nav-number">1.</span> <span class="nav-text">Types of error</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#outlier"><span class="nav-number"></span> <span class="nav-text">outlier:</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#hyperparameters"><span class="nav-number"></span> <span class="nav-text">hyperparameters</span></a>
+    
+    </li></div>
+  </aside>
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019 Z.Ran All Rights Reserved.
+          <!-- 
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+           -->
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+<script src="/js/my.js"></script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://dnqof95d40fo6.cloudfront.net/atw7f8.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="utf-8">
+
+  <!-- PACE Progress Bar START -->
+  
+    <script src="https://raw.githubusercontent.com/HubSpot/pace/v1.0.2/pace.min.js"></script>
+    <link rel="stylesheet" href="https://github.com/HubSpot/pace/raw/master/themes/orange/pace-theme-flash.css">
+  
+  
+
+  <!-- PACE Progress Bar START -->
+
+  
+  <title>quantitative methods in retail finance note 4 | Alex Zihuan Ran</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  
+    <meta name="keywords" content="ssss">
+  
+  
+  
+  
+  <meta name="description" content="This notes follows materials from the slides for M3S17 at Imperial College London Mathematics Department by Dr. Tony Bellotti. Questions mentioned are referring to past exam papers of M3S17 at Imperia">
+<meta name="keywords" content="Credit Modelling,Markov Transition Model">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Quantitative Methods in Retail Finance Note 4">
+<meta property="og:url" content="http://yoursite.com/2019/04/14/Quantitative Methods in Retail Finance Note4/index.html">
+<meta property="og:site_name" content="Alex Zihuan Ran">
+<meta property="og:description" content="This notes follows materials from the slides for M3S17 at Imperial College London Mathematics Department by Dr. Tony Bellotti. Questions mentioned are referring to past exam papers of M3S17 at Imperia">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2019-04-15T07:00:44.398Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Quantitative Methods in Retail Finance Note 4">
+<meta name="twitter:description" content="This notes follows materials from the slides for M3S17 at Imperial College London Mathematics Department by Dr. Tony Bellotti. Questions mentioned are referring to past exam papers of M3S17 at Imperia">
+  
+    <link rel="alternate" href="/atom.xml" title="Alex Zihuan Ran" type="application/atom+xml">
+  
+  <link rel="icon" href="/css/images/favicon.ico">
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Montserrat:700" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic" rel="stylesheet" type="text/css">
+  <link href="https://cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+  <style type="text/css">
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/9749f0/00000000000000000001008f/27/l?subset_id=2&fvd=n5) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/90cf9f/000000000000000000010091/27/l?subset_id=2&fvd=n7) format("woff2");font-weight:500;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/8a5494/000000000000000000013365/27/l?subset_id=2&fvd=n4) format("woff2");font-weight:lighter;font-style:normal;}
+    @font-face{font-family:futura-pt;src:url(https://use.typekit.net/af/d337d8/000000000000000000010095/27/l?subset_id=2&fvd=i4) format("woff2");font-weight:400;font-style:italic;}</style>
+    
+  <link rel="stylesheet" id="athemes-headings-fonts-css" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz%3A200%2C300%2C400%2C700&amp;ver=4.6.1" type="text/css" media="all">
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/hiero.css">
+  <link rel="stylesheet" href="/css/glyphs.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/css/my.css">
+  <!-- Google Adsense -->
+  
+  <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+  <script>
+      (adsbygoogle = window.adsbygoogle || []).push({
+          google_ad_client: "ca-pub-0123456789ABCDEF",
+          enable_page_level_ads: true
+      });
+  </script>
+  
+</head>
+</html>
+<script>
+var themeMenus = {};
+
+  themeMenus["/"] = "Home"; 
+
+  themeMenus["/archives"] = "Archives"; 
+
+  themeMenus["/categories"] = "Categories"; 
+
+  themeMenus["/tags"] = "Tags"; 
+
+  themeMenus["/about"] = "About"; 
+
+</script>
+
+
+  <body data-spy="scroll" data-target="#toc" data-offset="50">
+
+
+  <header id="allheader" class="site-header" role="banner">
+  <div class="clearfix container">
+      <div class="site-branding">
+
+          <h1 class="site-title">
+            
+              <a href="/" title="Alex Zihuan Ran" rel="home"> Bello! </a>
+            
+          </h1>
+
+          
+            <div class="site-description">I&#39;m Alex Ran, 冉梓欢.</div>
+          
+            
+          <nav id="main-navigation" class="main-navigation" role="navigation">
+            <a class="nav-open">Menu</a>
+            <a class="nav-close">Close</a>
+            <div class="clearfix sf-menu">
+
+              <ul id="main-nav" class="nmenu sf-js-enabled">
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class href="/">Home</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class href="/archives">Archives</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class href="/categories">Categories</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class href="/tags">Tags</a> </li>
+                    
+                      <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1663"> <a class href="/about">About</a> </li>
+                    
+              </ul>
+            </div>
+          </nav>
+
+
+      </div>
+  </div>
+</header>
+
+
+  <div id="originBgDiv" style="background: #fff; width: 100%;">
+
+      <div style="max-height:600px; overflow: hidden;  display: flex; display: -webkit-flex; align-items: center;">
+        <img id="originBg" width="100%" alt src>
+      </div>
+
+  </div>
+
+  <script>
+  function setAboutIMG(){
+      var imgUrls = "css/images/pose.jpg,https://source.unsplash.com/collection/954550/1920x1080".split(",");
+      var random = Math.floor((Math.random() * imgUrls.length ));
+      if (imgUrls[random].startsWith('http') || imgUrls[random].indexOf('://') >= 0) {
+        document.getElementById("originBg").src=imgUrls[random];
+      } else {
+        document.getElementById("originBg").src='/' + imgUrls[random];
+      }
+  }
+  bgDiv=document.getElementById("originBgDiv");
+  if(location.pathname.match('about')){
+    setAboutIMG();
+    bgDiv.style.display='block';
+  }else{
+    bgDiv.style.display='none';
+  }
+  </script>
+
+
+
+  <div id="container">
+    <div id="wrap">
+            
+      <div id="content" class="outer">
+        
+          <section id="main" style="float:none;"><article id="post-Quantitative Methods in Retail Finance Note4" style="width: 66%; float:left;" class="article article-type-post" itemscope itemprop="blogPost">
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="thumb" itemprop="name">
+      Quantitative Methods in Retail Finance Note 4
+    </h1>
+  
+
+      </header>
+    
+    
+    <div class="article-meta">
+      
+	Posted on <a href="/2019/04/14/Quantitative Methods in Retail Finance Note4/" class="article-date">
+	  <time datetime="2019-04-14T09:11:35.000Z" itemprop="datePublished">April 14, 2019</time>
+	</a>
+
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Notes/">Notes</a>, <a class="article-category-link" href="/categories/Notes/Math-Notes/">Math Notes</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Credit-Modelling/">Credit Modelling</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Markov-Transition-Model/">Markov Transition Model</a></li></ul>
+
+    </div>
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>This notes follows materials from the slides for M3S17 at Imperial College London Mathematics Department by Dr. Tony Bellotti. Questions mentioned are referring to past exam papers of M3S17 at Imperial College London.</p>
+<p>#Chapter 3: Markov Transition Model</p>
+<h2 id="Markov-Transition-Models"><a href="#Markov-Transition-Models" class="headerlink" title="Markov Transition Models"></a>Markov Transition Models</h2><h3 id="Why-Markov-Chain-Model"><a href="#Why-Markov-Chain-Model" class="headerlink" title="Why Markov Chain Model?"></a>Why Markov Chain Model?</h3><p>This model allow us to track model <strong>changes in the state</strong> of an account over time.<br>e.g. Tracking credit card use.</p>
+<h3 id="First-order-Markov-Transition-Model"><a href="#First-order-Markov-Transition-Model" class="headerlink" title="First-order Markov Transition Model"></a>First-order Markov Transition Model</h3><ul>
+<li>Let $(X_1, X_2, …, X_n)$ be a sequence of discrete random variables that take value from ${1,2,…,K}$ with K fixed.</li>
+<li><strong>first-order finite value Markov chain</strong><br>The sequence is said to be a <em>first-order finite value Markov chain</em> if<br>$$<br>P(X_{n+1}=j|X_0=x_0,X_1=x_1,X_2=x_2,…,X_{n-1}=x_{n-1},X_n = i) = P(X_{n+1}=j|X_n = i)<br>$$<br>for all $n, x_0,x_1, …, x_{n-1}$ and $i,j$ such that $1\leq i,j \leq K$.</li>
+<li><strong>transition probability</strong><br><em>Transition probability</em> $p_n$ is defined as<br>$$<br>p_{n}(i,j)=P(X_n=j|X_{n-1}=i)<br>$$</li>
+<li><strong>transition matrix</strong><br><em>Transition matrix</em> $P$ is defined as a $K \times K$ matrix such that<br>$$<br>P_n[i,j] = p_{n}(i,j)<br>$$</li>
+<li><strong>structural zeroes</strong><br>If it is certain that no transition will be made from i to j in the $n$th period, then set $p_n(i,j)=0$, this is called a <em>structural zero</em>.</li>
+</ul>
+<p>###Propagation of Markov Chain<br>If we know the transition matrix from period $n-r$ to $n$, i.e. $P_r,P_{r+1},…,P_{n-1}$ are known, then we also be able to know the state in the $n$th period:<br>$$<br>Prob(X_{n}=j|X_{n-r}=i) = P_{n-r+1}P_{n-r+2}…P_{n}[i,j]<br>$$<br>for any $1\leq r \leq n$</p>
+<p>Forcasting from state 0:<br>$$<br>Prob(X_{n}=j|X_{0}=i) = P_{1}P_{2}…P_{n}[i,j]<br>$$<br>let $\pi_{i}$ be the marginal distribution for $X_n$:<br>$$\pi_n = (P(X_n = 1),P(X_n = 2),…,P(X_n = K))^T$$</p>
+<p>Then,<br>$$\pi_n = \pi_0(P_1 P_2 … P_n)$$</p>
+<h3 id="Stationary-Markov-Chain"><a href="#Stationary-Markov-Chain" class="headerlink" title="Stationary Markov Chain"></a>Stationary Markov Chain</h3><ul>
+<li><strong>stationary</strong><br>A Markov chain is <em>stationary</em> if $p_n(i,j)=p(i,j)$ for all $<strong>n</strong>,\ and\ i,j\ where 1\leq i, j \leq K$, for some transition probability $p$.</li>
+<li><strong>stationary distribution</strong><br>A <em>stationary distribution</em> for transition matrix is a distribution $\pi^\star = \pi^\star P$.<blockquote>
+<p>In practice, most Markov chains converge (with 𝑛) to a stationary<br>distribution.<br>(Markov chains which have a periodicity in state change do not necessarily converge, but we do not cover this material in this course).</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Estimation"><a href="#Estimation" class="headerlink" title="Estimation"></a>Estimation</h2><p>The aim this section, given some data, is to estimate $\mathbf{\theta}=(\theta_{ij})^{K}<em>{i,j=1}$ where $\theta</em>{ij}=p(i,j)$.<br>Maximum likelihood estimator for $\mathbf{\theta}$:<br>$$<br>\hat\theta_{ij}=\hat p(i,j)=\frac{n_{ij}}{\sum_{l=1}^{n}n_{il}}<br>$$<br>where $n_{ij}=|{t:x_{t-1}=i,x_{t}=j,\ for \ t\in {1,2,…,n}}|$, i.e. total number of observations that move from state $i$ to state $j$ during period 1 to n.<br><strong>proof</strong></p>
+<blockquote>
+<p>2017Q1<br>(c) Derive the maximum likelihood estimator for the first order finite-valued Markov transition model, assuming stationarity.</p>
+</blockquote>
+<ol>
+<li>likelihood function</li>
+</ol>
+<p>$P(X_0=x_0,X_1=x_1,…,X_n=x_n)$<br>$=\prod_{t=1}^{n} P(X_{t}=x_t|X_{t-1}=x_{t-1},X_{t-2}=x_{t-2},…,X_{1}=x_{1})P(X_0=x_0)$<br>$=\prod_{t=1}^{n} P(X_{t}=x_t|X_{t-1}=x_{t-1})P(X_0=x_0)(Chain rule)$<br>$=P(X_0=x_0)\prod_{t=1}^{n} P(X_{t}=x_t|X_{t-1}=x_{t-1})$<br>$=P(X_0=x_0)\prod_{i=1}^{n}\prod_{j=1}^{n}[p(i,j)]^{n_{ij}}$<br>$=P(X_0=x_0)\prod_{i=1}^{n}\prod_{j=1}^{n}[\theta_{ij}]^{n_{ij}}$<br>$$<br>where\ n_{ij}=|{t:x_t=x_t,X_{t-1}=x_{t-1},\ for\ t\in {1,…,n}}|<br>$$</p>
+<ol start="2">
+<li>log likelihood function</li>
+<li>differentiate and find MLE</li>
+<li>adjust to constraints  </li>
+</ol>
+<h2 id="Testing-First-order-Assumptions"><a href="#Testing-First-order-Assumptions" class="headerlink" title="Testing First-order Assumptions"></a>Testing First-order Assumptions</h2><p>In order to test if first order markov chain is a suitable assumption in each occasion,<br>we use chi-square hypothesis test.</p>
+<h3 id="second-order-Markov-chain"><a href="#second-order-Markov-chain" class="headerlink" title="second order Markov chain"></a>second order Markov chain</h3><p>A sequence (x_1,..,x_n) is a <em>second order Markov chain</em> if<br>$P(x_n+1=j|X_0=x_0,…,X_{n-1}=k,X_{n}=i)=P(x_n+1=j|X_{n-1}=k,X_{n}=i)$</p>
+<p>The <strong>transition probability</strong><br>$p_n(k,i,j)=P(X_n=i, X_{n-1}=k)$</p>
+<p>The <strong>MLE for a second-Markov chain</strong> can similarly be proved as:<br>$\hat p(k,i,j)=\hat\theta_{kij}=\frac{n_kij}{mki}$<br>where $n_{kij}=|{t:x_{t-2}=k,x_{t-1}=i,x_{t}=j\ for\ t \in {2,…,n}}|,<br>m_{ki}=|{t:x_{t-2}=k,x_{t-1}=i\ for\ t \in {2,…,n}}|=\sum_{l=i}^{n}n_{kil}$</p>
+<ol>
+<li><p><strong>$H_{0}$</strong><br>Null hypothesis:<br>$P(1,i,j)=P(2,i,j)=…=P(K,i,j)=P(i,j)$<br>where $P(k,i,j)$ is second-order Markov transition probability from state k to i then to j.</p>
+</li>
+<li><p><strong>$n_k$</strong><br>$n_k=|{t:x_t=k\ for\ t \in {1,..,n}}|$<br>i.e. The observed number of times for each states</p>
+</li>
+<li><p><strong>$O_{kj}$</strong><br>The observed number of times state k follwed by i and then j<br>$O_{kj}=n{kij}=m_{ki}\hat p(i,j)$</p>
+</li>
+<li><p><strong>$E_{kj}$</strong><br>The expected number of times state $k$ is followed by state $i$ and then $j$, <strong>given null hypothesis</strong> is:<br>$E_{kj}=n_{k}\hat p(k,i)\hat p(i,j)\approx m_{ki}\hat p(i,j)$<br>becuase $\hat p(k,i)=\frac{n_{ki}}{\sum_{l=1}^{K}n_{kl}}\approx \frac{m_{ki}}{n_k}$</p>
+</li>
+<li><p><strong>Pearson Chi_square test</strong><br>$$<br>\chi^2 = \sum_{k\in S_1}\sum_{k\in S_2}\frac{(O_{kj}-E{kj})^2}{E_{kj}}<br>$$</p>
+</li>
+</ol>
+<ul>
+<li>S1 is the set of states which do not have a structural zero moving to state $i$</li>
+<li>S2 is the set of states which do not have a structural zero moving from state $i$</li>
+</ul>
+<ol start="6">
+<li><strong>Degree of freedom</strong><br>$df = (K-1-z_{1})(K-1-z_{2})$</li>
+</ol>
+<ul>
+<li>$z_1$: the number of structural zeroes in the transition from $k$ to $i$.</li>
+<li>$z_2$: the number of structural zeroes in the transition from $i$ to $j$.</li>
+</ul>
+<h2 id="Roll-rate-Model"><a href="#Roll-rate-Model" class="headerlink" title="Roll-rate Model"></a>Roll-rate Model</h2>
+      
+    </div>
+    <footer class="entry-meta entry-footer">
+      
+	<span class="ico-folder"></span>
+    <a class="article-category-link" href="/categories/Notes/">Notes</a>, <a class="article-category-link" href="/categories/Notes/Math-Notes/">Math Notes</a>
+
+      
+  <span class="ico-tags"></span>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Credit-Modelling/">Credit Modelling</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Markov-Transition-Model/">Markov Transition Model</a></li></ul>
+
+      
+        
+	<div id="comment">
+		<!-- 来必力City版安装代码 -->
+		<div id="lv-container" data-id="city" data-uid="MTAyMC8yOTQ4MS82MDQ5">
+		<script type="text/javascript">
+		   (function(d, s) {
+		       var j, e = d.getElementsByTagName(s)[0];
+
+		       if (typeof LivereTower === 'function') { return; }
+
+		       j = d.createElement(s);
+		       j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+		       j.async = true;
+
+		       e.parentNode.insertBefore(j, e);
+		   })(document, 'script');
+		</script>
+		<noscript>为正常使用来必力评论功能请激活JavaScript</noscript>
+		</div>
+		<!-- City版安装代码已完成 -->
+	</div>
+
+
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/04/14/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Prev</strong>
+      <div class="article-nav-title">
+        
+          Hello World
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/04/14/Quantitative Methods in Retail Finance Note3/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Next</strong>
+      <div class="article-nav-title">Quantitative Methods in Retail Finance Note 3</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+<!-- Table of Contents -->
+
+  <aside id="sidebar">
+    <div id="toc" class="toc-article" style="overflow-y: scroll; max-width: 28%;">
+    <strong class="toc-title">Contents</strong>
+    
+      <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Markov-Transition-Models"><span class="nav-number">1.</span> <span class="nav-text">Markov Transition Models</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-Markov-Chain-Model"><span class="nav-number">1.1.</span> <span class="nav-text">Why Markov Chain Model?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#First-order-Markov-Transition-Model"><span class="nav-number">1.2.</span> <span class="nav-text">First-order Markov Transition Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Stationary-Markov-Chain"><span class="nav-number">1.3.</span> <span class="nav-text">Stationary Markov Chain</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Estimation"><span class="nav-number">2.</span> <span class="nav-text">Estimation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Testing-First-order-Assumptions"><span class="nav-number">3.</span> <span class="nav-text">Testing First-order Assumptions</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#second-order-Markov-chain"><span class="nav-number">3.1.</span> <span class="nav-text">second order Markov chain</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Roll-rate-Model"><span class="nav-number">4.</span> <span class="nav-text">Roll-rate Model</span></a></li></ol>
+    
+    </div>
+  </aside>
+</section>
+        
+      </div>
+      <footer id="footer" class="site-footer">
+  
+
+  <div class="clearfix container">
+      <div class="site-info">
+	      &copy; 2019 Z.Ran All Rights Reserved.
+          <!-- 
+            <span id="busuanzi_container_site_uv">
+              本站访客数<span id="busuanzi_value_site_uv"></span>人次  
+              本站总访问量<span id="busuanzi_value_site_pv"></span>次
+            </span>
+           -->
+      </div>
+      <div class="site-credit">
+        Theme by <a href="https://github.com/iTimeTraveler/hexo-theme-hiero" target="_blank">hiero</a>
+      </div>
+  </div>
+</footer>
+
+
+<!-- min height -->
+
+<script>
+    var contentdiv = document.getElementById("content");
+
+    contentdiv.style.minHeight = document.body.offsetHeight - document.getElementById("allheader").offsetHeight - document.getElementById("footer").offsetHeight + "px";
+</script>
+
+<!-- Custome JS -->
+<script src="/js/my.js"></script>
+    </div>
+    <!-- <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+    <a href="/categories" class="mobile-nav-link">Categories</a>
+  
+    <a href="/tags" class="mobile-nav-link">Tags</a>
+  
+    <a href="/about" class="mobile-nav-link">About</a>
+  
+</nav> -->
+    
+
+<!-- mathjax config similar to math.stackexchange -->
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.js"></script>
+
+
+<script src="/js/scripts.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+
+  <div style="display: none;">
+    <script src="https://s95.cnzz.com/z_stat.php?id=1260716016&web_id=1260716016" language="JavaScript"></script>
+  </div>
+
+
+
+	<script async src="https://dnqof95d40fo6.cloudfront.net/atw7f8.js">
+	</script>
+
+
+
+
+
+
+  </div>
+
+  <a id="rocket" href="#top" class=""></a>
+  <script type="text/javascript" src="/js/totop.js" async=""></script>
+</body>
+</html>
