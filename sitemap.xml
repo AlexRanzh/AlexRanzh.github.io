@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2019/04/06/DS100%20-%20Data%20Manipulation%20and%20Cleaning/</loc>
+    
+    <lastmod>2019-06-01T07:54:45.602Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2018/09/27/Stochastic%20Differential%20Equation%20simulations%20and%20uniform%20peacock%20problem/</loc>
+    
+    <lastmod>2019-06-01T07:46:27.301Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2019/04/16/Introduction%20to%20Machine%20Learning/</loc>
     
     <lastmod>2019-04-17T03:39:16.436Z</lastmod>
@@ -44,13 +58,6 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/index.html</loc>
-    
-    <lastmod>2019-04-15T00:17:48.444Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://yoursite.com/about/index.html</loc>
     
     <lastmod>2019-04-15T00:17:48.444Z</lastmod>
@@ -58,23 +65,16 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/09/27/Stochastic%20Differential%20Equation%20simulations%20and%20uniform%20peacock%20problem/</loc>
+    <loc>http://yoursite.com/categories/index.html</loc>
     
-    <lastmod>2019-04-15T00:17:48.442Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2019/04/14/hello-world/</loc>
-    
-    <lastmod>2019-04-15T00:17:48.442Z</lastmod>
+    <lastmod>2019-04-15T00:17:48.444Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2019/04/06/DS100%20-%20Data%20Manipulation%20and%20Cleaning/</loc>
+    <loc>http://yoursite.com/2019/04/15/hello-world/</loc>
     
-    <lastmod>2019-04-15T00:17:48.441Z</lastmod>
+    <lastmod>2019-04-15T00:17:48.442Z</lastmod>
     
   </url>
   
